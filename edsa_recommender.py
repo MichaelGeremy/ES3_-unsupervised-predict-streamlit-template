@@ -41,6 +41,7 @@ from recommenders.content_based import content_model
 title_list = load_movie_titles('resources/data/movies.csv')
 
 # App declaration
+st.set_page_config(page_title="Movie Recommender Engine", layout="wide")
 
 
 def main():
@@ -107,6 +108,15 @@ def main():
     # You may want to add more sections here for aspects such as an EDA,
     # or to provide your business pitch.
 
+
+#------CSS STYLES------#
+# Hide Streamlit Styles
+hide_style = """
+    <style>
+    #MainMenu, footer, header {visibility:hidden;}
+    </style>
+"""
+#st.markdown(hide_style, unsafe_allow_html=True)
 
 if __name__ == '__main__':
     main()
