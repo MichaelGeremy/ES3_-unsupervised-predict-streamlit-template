@@ -121,7 +121,6 @@ def collab_model(movie_list, top_n=10):
         Titles of the top-n movie recommendations to the user.
 
     """
-
     indices = pd.Series(movies_df['title'])
 
     movie_list = [movies_df[movies_df['title'] == i].movieId.values[0]
