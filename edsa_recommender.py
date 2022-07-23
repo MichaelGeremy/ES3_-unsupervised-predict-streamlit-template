@@ -33,7 +33,7 @@ import pandas as pd
 import numpy as np
 
 # Custom Libraries
-from utils.data_loader import load_movie_titles
+from utils.data_loader import load_movie_titles, load_data_for_eda, get_genres
 from recommenders.collaborative_based import collab_model
 from recommenders.content_based import content_model
 
@@ -138,12 +138,10 @@ def main():
         # You may want to add more sections here for aspects such as an EDA,
         # or to provide your business pitch.
         import matplotlib.pyplot as plt
-        st.title("Exploratory Data Analysis")
         import seaborn as sns
-        ratings = pd.read_csv("./resources/data/ratings.csv")
-        movies = pd.read_csv("./resources/data/movies.csv")
-
-        movies_merged = movies.merge(ratings, how='outer', on='movieId')
+        st.title("Exploratory Data Analysis")
+        df = load_data_for_eda("./resources/data")
+        st.sidebar()
 
         rated_movies = ratings.movieId.nunique()
         users = ratings.userId.nunique()
