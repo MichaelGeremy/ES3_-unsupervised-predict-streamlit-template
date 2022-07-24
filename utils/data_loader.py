@@ -8,8 +8,10 @@
 # Data handling dependencies
 import pandas as pd
 import numpy as np
+import streamlit as st
 
 
+@st.cache
 def load_movie_titles(path_to_movies):
     """Load movie titles from database records.
 
@@ -31,6 +33,7 @@ def load_movie_titles(path_to_movies):
     return movie_list
 
 
+@st.cache
 def load_data_for_eda(path_to_movies):
     """Load movie and rating datasets for eda.
 
@@ -53,6 +56,7 @@ def load_data_for_eda(path_to_movies):
     return df
 
 
+@st.cache
 def get_genres(series_with_genres):
     """Load Pandas Series to extract genres from a dataset
 

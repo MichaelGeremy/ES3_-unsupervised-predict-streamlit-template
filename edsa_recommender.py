@@ -27,22 +27,26 @@
 """
 # Streamlit dependencies
 import streamlit as st
+# st.set_page_config(page_title="Movie Recommender Engine", layout="wide")
 
 # Data handling dependencies
 import pandas as pd
 import numpy as np
 
+from PIL import Image  # Image Processing
+
 # Custom Libraries
 from utils.data_loader import load_movie_titles, load_data_for_eda, get_genres
+from utils.visuals_creator import (
+    create_metrics, create_ratings_distribution, create_count_vs_average_ratings_per_movie, create_top_n_frequently_rated_movie, create_top_n_frequently_rating_users
+)
 from recommenders.collaborative_based import collab_model
 from recommenders.content_based import content_model
 
-from PIL import Image  # Image Processing
 # Data Loading
 title_list = load_movie_titles('resources/data/movies.csv')
 
 # App declaration
-st.set_page_config(page_title="Movie Recommender Engine", layout="wide")
 
 
 def main():
@@ -75,16 +79,16 @@ def main():
         # Perform top-10 movie recommendation generation
         if sys == 'Content Based Filtering':
             if st.button("Recommend"):
-                try:
-                    with st.spinner('Crunching the numbers...'):
-                        top_recommendations = content_model(movie_list=fav_movies,
-                                                            top_n=10)
-                    st.title("We think you'll like:")
-                    for i, j in enumerate(top_recommendations):
-                        st.subheader(str(i+1)+'. '+j)
-                except:
-                    st.error("Oops! Looks like this algorithm does't work.\
-                              We'll need to fix it!")
+                # try:
+                with st.spinner('Crunching the numbers...'):
+                    top_recommendations = content_model(movie_list=fav_movies,
+                                                        top_n=10)
+                st.title("We think you'll like:")
+                for i, j in enumerate(top_recommendations):
+                    st.subheader(str(i+1)+'. '+j)
+                # except:
+                #     st.error("Oops! Looks like this algorithm does't work.\
+                #               We'll need to fix it!")
 
         if sys == 'Collaborative Based Filtering':
             if st.button("Recommend"):
@@ -137,39 +141,76 @@ def main():
     if page_selection == "EDA":
         # You may want to add more sections here for aspects such as an EDA,
         # or to provide your business pitch.
-        import matplotlib.pyplot as plt
-        import seaborn as sns
         st.title("Exploratory Data Analysis")
+
         df = load_data_for_eda("./resources/data")
-        st.sidebar()
 
-        rated_movies = ratings.movieId.nunique()
-        users = ratings.userId.nunique()
-        average_rating = round(ratings.rating.mean(), 1)
+        st.sidebar.markdown("---")
+        st.sidebar.subheader("Filters")
+        genres = st.sidebar.multiselect(
+            "Select Genres", get_genres(df.genres), default=None)
 
-        left_card, middle_card, right_card = st.columns(3)
+        if len(genres) == 0:
+            visual_df = df
+        else:
+            visual_df = df.dropna(subset=['genres'])
+            expression = '|'.join(
+                [f"visual_df.genres.str.contains('{genre}', case=False, regex=False)" for genre in genres])
+            visual_df = visual_df[eval(expression)]
 
-        # Create the figures to display
-        ratings_dist = sns.catplot(x="rating", data=movies_merged[[
-                                   'rating']], kind='count', color="#001001", aspect=1.25)
-        ratings_dist.set_ylabels("counts")
-        ratings_dist.set(title="Total number of ratings")
+        movies, rated_movies, users, average_rating = create_metrics(
+            visual_df[['movieId', 'userId', 'rating']])
 
-        with left_card:
-            st.subheader(rated_movies)
-            st.write("Number of Rated Movies")
-
-        with middle_card:
-            st.subheader(users)
-            st.write("Number of Users")
-
-        with right_card:
-            st.subheader(
-                f"{average_rating} {':star:' * int(round(average_rating, 0))}")
-            st.write("Average Movies Rating")
+        # Create the metrics and display them
+        metric1, metric2, metric3, metric4 = st.columns(4)
+        with metric1:
+            st.metric('Number of Movies', "{:,}".format(movies))
+        with metric2:
+            st.metric("Number of Rated Movies", "{:,}".format(rated_movies))
+        with metric3:
+            st.metric("Number of Users", "{:,}".format(users))
+        with metric4:
+            st.metric("Average Rating", average_rating)
 
         st.write("---")
-        st.pyplot(ratings_dist)
+        ratings_dist_viz = create_ratings_distribution(visual_df)
+        ratings_dist_viz.update_layout(
+            plot_bgcolor="rgba(0,0,0,0)",
+            yaxis=dict(showgrid=False)
+        )
+
+        count_avg_rating_visual = create_count_vs_average_ratings_per_movie(
+            visual_df)
+        count_avg_rating_visual.update_layout(
+            plot_bgcolor="rgba(0,0,0,0)",
+            xaxis=dict(showgrid=False),
+            yaxis=dict(showgrid=False)
+        )
+
+        top_n_frequently_rated_movies = create_top_n_frequently_rated_movie(
+            visual_df, 10)
+        top_n_frequently_rated_movies.update_layout(
+            plot_bgcolor="rgba(0,0,0,0)",
+            xaxis=dict(showgrid=False)
+        )
+
+        top_n_frequently_rating_users = create_top_n_frequently_rating_users(
+            visual_df, 10)
+        top_n_frequently_rating_users.update_layout(
+            plot_bgcolor="rgba(0,0,0,0)",
+            xaxis=dict(showgrid=False)
+        )
+
+        ratings_dist_viz_col, count_avg_rating_visual_col = st.columns(2)
+
+        ratings_dist_viz_col.plotly_chart(
+            ratings_dist_viz, use_container_width=True)
+        count_avg_rating_visual_col.plotly_chart(
+            count_avg_rating_visual, use_container_width=True)
+        st.plotly_chart(top_n_frequently_rated_movies,
+                        use_container_width=True)
+        st.plotly_chart(top_n_frequently_rating_users,
+                        use_container_width=True)
 
     # Create about page
     if page_selection == "About":
@@ -229,6 +270,21 @@ hide_style = """
             color: #FF5714;
             font-size: 1.15em;
             text-align: center;
+        }
+        
+        .element-container.css-rztpzi > div {
+            text_align: center;
+            border-radius: 7px;
+            padding: 1rem;
+            box-shadow: 1px 1px 2px 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            background-color: #0083b8;
+        }
+        
+        .element-container.css-rztpzi > div .css-1xarl3l{
+            color: #00172b;
         }
     </style>
 """
