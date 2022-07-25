@@ -1,0 +1,112 @@
+/* #MainMenu, footer, header {
+    visibility:hidden;
+} */
+
+.css-ocqkz7 img {
+    width: 100%;
+    aspect-ratio: 1/1;
+    object-fit: cover;
+    padding: 0.15rem;
+    border-radius: 20px;
+    border: 2px solid #0083B8;
+    max-width: 100%;
+    max-width: 300px;
+    aspect-ratio: 10/9;
+}
+
+.css-ocqkz7  .css-keje6w {
+    align-self: center;
+}
+
+.css-ocqkz7 .css-1kyxreq {
+    justify-content: center
+}
+
+.css-ocqkz7 .css-zt5igj {
+    font-size: 1.75rem;
+    text-align: center;
+    color: #0083B8;
+}
+
+.css-ocqkz7 .css-1jikqva.e16nr0p33 {
+    text-align: center;
+}
+
+.css-ocqkz7 .css-1jikqva.e16nr0p33 p{
+    font-size: 1.15em;
+}
+
+.css-ocqkz7 .css-g5vx4n .css-1jikqva  h2 {
+    padding: 0.25rem 0;
+    font-size: 2rem;
+    text-align: center;
+}
+
+#meet-the-team .css-zt5igj, #who-we-are .css-zt5igj, #why-us .css-zt5igj{
+    font-size:  2.25rem !important;
+    border-bottom: 2px solid #0083B8;
+    margin: 0 1rem 1.5rem;
+    padding-bottom: 1.5rem;
+}
+
+.element-container.css-1v313y > div {
+    text-align: center;
+    border-radius: 7px;
+    padding: 1rem;
+    box-shadow: 1px 1px 2px 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: #0083b8;
+}
+
+.element-container.css-1v313y > div .css-1xarl3l {
+    color: #00172b;
+}
+
+#about-landing {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    height: 80vh;
+    text-align: center;
+    justify-content: space-evenly;
+    background: url("https://images.unsplash.com/photo-1526925539332-aa3b66e35444?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=465&q=80");
+    background-attachment: fixed;
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center center;
+    /*mix-blend-mode: hard-light;*/
+    padding: 8rem 2rem;
+    position: relative;
+    margin-bottom: 2rem;
+}
+
+h1#convert-your-data-into-dollars span {
+    font-size: 1.5em;
+}
+
+#about-caption {
+    font-size: 1.5em;
+}
+
+.main {
+    background-image: url("/resources/imgs/Image_header.png");
+    background-attachment: fixed;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+#mission-statement {
+    width: 100%;
+    text-align: center;
+    font-family: cursive;
+    font-size: 2.15em;
+    color: #0083B8;
+    padding: 3rem;
+    background: url("https://images.unsplash.com/photo-1526925539332-aa3b66e35444?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=465&q=80");
+    background-attachment: fixed;
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center center;
+}

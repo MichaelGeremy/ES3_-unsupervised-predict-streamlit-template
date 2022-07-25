@@ -26,14 +26,16 @@
 
 """
 # Streamlit dependencies
+from pygments import highlight
 import streamlit as st
-# st.set_page_config(page_title="Movie Recommender Engine", layout="wide")
+st.set_page_config(page_title="Movie Recommender Engine", layout="wide")
 
 # Data handling dependencies
 import pandas as pd
 import numpy as np
 
-from PIL import Image  # Image Processing
+from PIL import Image
+from yaml import unsafe_load_all  # Image Processing
 
 # Custom Libraries
 from utils.data_loader import load_movie_titles, load_data_for_eda, get_genres
@@ -216,10 +218,47 @@ def main():
     if page_selection == "About":
         # Creates a main title and subheader on your page -
         # these are static across all pages
-        st.title("About Page")
 
-        st.subheader("Project Team")
+        with st.container():
+            st.markdown('''
+                <div id="about-landing">
+                <h1>Convert your data into dollars</h1>
+                <div id="about-caption">To drive digital transformation, Team ES combines ML and AI to build rapidly deployable retail solutions for substantial revenue gains, finally making AI and ML solutions affordable for the retail industry.</div>
+                </div>
+                ''',
+                        unsafe_allow_html=True)
+        st.markdown('---')
+        with st.container():
+            highlight1, highlight2, highlight3, highlight4 = st.columns(4)
+            highlight1.metric("Product Churn", 0)
+            highlight2.metric("Bottom Line Growth", "$500M")
+            highlight3.metric("Hours Saved", "10,000+")
+            highlight4.metric("Integrations", "30+")
+        with st.container():
+            left1, right1 = st.columns(2)
+            left1.subheader("Who we are?")
+            left1.markdown('''
+                We are the fastest-growing Retail, CPG and Supply Chain focused enterprise AI SaaS product company. We have built award winning products and our success is driven by focus on innovation and changing existing processes through automation.
 
+                We have customers ranging from small business owners, SMEs to MMEs. Our SaaS solutions are built to provide quick visibility into your business, based on real time information, and enable smarter decisions based on data driven insights, while optimizing costs and adding millions back into the bottom line.
+            ''')
+            right1.image(Image.open("./resources/imgs/who-we-are.png"), use_column_width="always")
+        st.markdown("---")
+        st.subheader(
+            "To leverage digital and traditional data towards a competitive advantage",
+            anchor="mission-statement")
+        st.markdown("---")
+
+        with st.container():
+            left2, right2 = st.columns(2)
+            left2.image(Image.open("./resources/imgs/why-us.jpg"),use_column_width="always")
+            right2.subheader("Why us?")
+            right2.markdown('''
+                Our team is comprised of retailer experts, management consultants, data scientists and product engineers. Together, we work in an agile environment to create products that work for every user and we continue to be committed to our users and foster long-term partnerships based on delivering high quality solutions.
+            ''')
+            
+        st.markdown("---")
+        
         # Make a list with the info (Name, destination, image_path) for the team members
         team_members = [
             ('CHIBUIKEM EFUGHA', 'Member', 'resources/imgs/Placeholder.png'),
@@ -230,6 +269,8 @@ def main():
             ('SEYI ROTIMI', 'Member', 'resources/imgs/Placeholder.png'),
         ]
 
+        _, meet_team, _ = st.columns(3)
+        meet_team.header("Meet the Team")
         # Create a container to hold the  2row by 3 column grid
         with st.container():
             col0, col1, col2 = st.columns(3)
@@ -240,55 +281,12 @@ def main():
             name, destination, img_path = member
             with col:
                 st.image(Image.open(img_path))
-                st.header(name)
+                st.header(name.title())
                 st.write(destination)
-
-
-#------CSS STYLES------#
-# Hide Streamlit Styles
-hide_style = """
-    <style>
-        /*#MainMenu, footer, header {
-            visibility:hidden;
-        }*/
-        .css-ocqkz7 img {
-            width: 100%;
-            aspect-ratio: 1/1;
-            object-fit: cover;
-            padding: 0.15rem;
-            border-radius: 50%;
-            border: 2px solid #0083B8;
-        }
-
-        .css-ocqkz7 .css-g5vx4n .css-1jikqva  h2 {
-            padding: 0.25rem 0;
-            font-size: 1.5rem;
-            text-align: center;
-        }
-
-        .css-ocqkz7 .css-g5vx4n p {
-            color: #FF5714;
-            font-size: 1.15em;
-            text-align: center;
-        }
         
-        .element-container.css-rztpzi > div {
-            text_align: center;
-            border-radius: 7px;
-            padding: 1rem;
-            box-shadow: 1px 1px 2px 0;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            background-color: #0083b8;
-        }
-        
-        .element-container.css-rztpzi > div .css-1xarl3l{
-            color: #00172b;
-        }
-    </style>
-"""
-st.markdown(hide_style, unsafe_allow_html=True)
+
+with open('./resources/css/styles.css') as f:
+    st.markdown(f'<style>{f.read()}</style>', unsafe_allow_html=True)
 
 if __name__ == '__main__':
     main()
