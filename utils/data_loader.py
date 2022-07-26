@@ -51,8 +51,10 @@ def load_data_for_eda(path_to_movies):
     movies = pd.read_csv(f'{path_to_movies}/movies.csv')
     ratings = pd.read_csv(f'{path_to_movies}/ratings.csv')
 
-    df = movies.merge(ratings, how='outer', on='movieId')
-
+    df = movies.merge(ratings, how='left', on='movieId')
+    df['productionYear'] = pd.to_numeric(
+        df.title.str.extract(r'\(([0-9][0-9][0-9][0-9])\)', expand=True)[0], errors='coerce', downcast='integer'
+    )
     return df
 
 
@@ -72,3 +74,20 @@ def get_genres(series_with_genres):
     genres = series_with_genres[series_with_genres != '(no genres listed)']
     genres = genres.str.split('|').dropna().explode()
     return genres.unique().tolist()
+
+
+def get_years(series_with_year):
+    """Load Pandas Series to extract years from a dataset
+
+    Parameters
+    ----------
+    series_with_year [Pandas Series]:
+        Pandas series to extract with years column
+    Returns
+    -------
+    Tuple[int]:
+        (minimun_year, maximum_year)
+    """
+    years = series_with_year.dropna().sort_values()
+    years = years.unique().astype(int).tolist()
+    return (min(years), max(years))

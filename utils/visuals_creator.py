@@ -1,6 +1,9 @@
+from matplotlib.pyplot import legend
 import pandas as pd
 import numpy as np
 import plotly.express as px
+import plotly.graph_objects as go
+from plotly.subplots import make_subplots
 
 VISUALS_COLOR = '#FF5714'
 
@@ -19,7 +22,7 @@ def create_metrics(dataframe):
     rated_movies = dataframe.dropna(subset=['userId']).movieId.nunique()
     users = dataframe.userId.nunique()
     average_rating = round(dataframe.rating.mean(), 1)
-    return [movies, rated_movies, users, average_rating]
+    return (movies, rated_movies, users, average_rating)
 
 
 def create_ratings_distribution(dataframe):
@@ -42,6 +45,10 @@ def create_ratings_distribution(dataframe):
             "count": "Count of Ratings"
         }
     )
+    fig.update_layout(
+        plot_bgcolor="rgba(0,0,0,0)",
+        yaxis=dict(showgrid=False)
+    )
     return fig
 
 
@@ -61,12 +68,17 @@ def create_count_vs_average_ratings_per_movie(dataframe):
         df,
         x="mean",
         y="count",
-        title="Count of Ratings by Average Rating ",
+        title="<b>Count of Ratings by Average Rating</b>",
         labels={
             "mean": "Average Rating",
             "count": "Count of Ratings"
         },
         hover_name="title"
+    )
+    fig.update_layout(
+        plot_bgcolor="rgba(0,0,0,0)",
+        xaxis=dict(showgrid=False),
+        yaxis=dict(showgrid=False)
     )
     return fig
 
@@ -78,7 +90,7 @@ def create_top_n_frequently_rated_movie(dataframe, top_n):
         dataframe (Pandas DataFrame): A dataframe of movies with the movieId, userId, rating, genres as columns
         top_n (int): An integer specify the top n movies to select
     Returns:
-
+        plotly express bar plot figure
     """
     df = dataframe.dropna(subset=['rating']).groupby('title')['rating'].aggregate(
         ['count', 'mean']).sort_values('count', ascending=False).reset_index()
@@ -98,7 +110,13 @@ def create_top_n_frequently_rated_movie(dataframe, top_n):
             "mean": "Average Rating"
         }
     )
-    fig.update_xaxes(type='category')
+    fig.update_layout(
+        xaxis=dict(showgrid=False, type='category'),
+        plot_bgcolor="rgba(0,0,0,0)",
+        height=600,
+        legend_orientation="h",
+        legend_title_side="top left"
+    )
     return fig
 
 
@@ -109,7 +127,7 @@ def create_top_n_frequently_rating_users(dataframe, top_n):
         dataframe (Pandas DataFrame): A dataframe of movies with the movieId, userId, rating, genres as columns
         top_n (int): An integer specify the top n movies to select
     Returns:
-
+        plotly express bar plot figure
     """
     df = dataframe.dropna(subset=['rating']).groupby('userId')['rating'].aggregate(
         ['count', 'mean']).sort_values('count', ascending=False).reset_index()
@@ -131,5 +149,58 @@ def create_top_n_frequently_rating_users(dataframe, top_n):
             "mean": "Average Rating"
         }
     )
-    fig.update_xaxes(type='category')
+    fig.update_layout(
+        xaxis=dict(showgrid=False, type='category'),
+        plot_bgcolor="rgba(0,0,0,0)",
+        height=600,
+        legend_orientation="h",
+        legend_title_side="top left"
+    )
+    return fig
+
+
+def create_movies_production_over_time(dataframe):
+    """Creates a visual highlighting the number of movie produced per year
+        And how they are rated by user (Average rating)
+
+    Args:
+        dataframe (Pandas DataFrame): A dataframe of movies with the rating, productionYear as columns
+    Returns:
+        plotly express bar and line plot figure
+    """
+    df = dataframe.dropna(subset=['productionYear']).groupby('productionYear')[['productionYear', 'rating']].aggregate(
+        {'productionYear': 'count', 'rating': 'mean'}
+    )
+    df.columns = ['countYear', 'meanRating']
+    df.reset_index(inplace=True)
+
+    # Create figure with secondary y-axis
+    fig = make_subplots(specs=[[{"secondary_y": True}]])
+    # Add traces
+    fig.add_trace(
+        go.Bar(x=df.productionYear, y=df.meanRating,
+               name="Average rating", opacity=0.5),
+        secondary_y=False,
+    )
+    fig.add_trace(
+        go.Scatter(x=df.productionYear, y=df.countYear,
+                   name="Count of Produced Movies"),
+        secondary_y=True,
+    )
+    # Update figure layout
+    fig.update_layout(
+        title_text="<b>Movies Production and Average Rating over Time</b>",
+        yaxis=dict(title_text="Average Rating",
+                   showgrid=False,
+                   side='right'
+                   ),
+        yaxis2=dict(title_text="Count of Movies",
+                    showgrid=False,
+                    side='left'),
+        xaxis=dict(title_text="Year of Production", type='category'),
+        plot_bgcolor="rgba(0,0,0,0)",
+        height=600,
+        legend_orientation="h",
+        legend_title_side="top left"
+    )
     return fig

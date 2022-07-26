@@ -6,6 +6,7 @@
     width: 100%;
     aspect-ratio: 1/1;
     object-fit: cover;
+    object-position: top;
     padding: 0.15rem;
     border-radius: 20px;
     border: 2px solid #0083B8;
@@ -84,10 +85,18 @@
 
 h1#convert-your-data-into-dollars span {
     font-size: 1.5em;
+    font-family: cursive;
+    color: #0083B8;
 }
 
 #about-caption {
     font-size: 1.5em;
+}
+
+#about-caption span {
+    font-size: 1.5em;
+    font-family: cursive;
+    color: #0083B8;
 }
 
 .main {
