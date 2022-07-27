@@ -287,7 +287,7 @@ def main():
             ('CHIBUIKEM EFUGHA', 'Member', 'resources/imgs/CHIBUIKEM_EFUGHA.jpeg'),
             ('MICHAEL MWENDA', 'Member', 'resources/imgs/MICHAEL_MWENDA.jpg'),
             ('PATRICK ONDUTO', 'Member', 'resources/imgs/PATRICK_ONDUTO.jpg'),
-            ('TOCHUKWU EFEOKAFOR', 'Member', 'resources/imgs/Placeholder.png'),
+            ('TOCHUKWU EZEOKAFOR', 'Member', 'resources/imgs/TOCHUKWU_EZEOKAFOR.jpeg'),
             ('ABIOLA AKINWALE', 'Member', 'resources/imgs/Placeholder.png'),
             ('SEYI ROTIMI', 'Member', 'resources/imgs/Placeholder.png'),
         ]
