@@ -1,18 +1,16 @@
-/* #MainMenu, footer, header {
+#MainMenu, footer, header {
     visibility:hidden;
-} */
+}
 
 .css-ocqkz7 img {
-    width: 100%;
-    aspect-ratio: 1/1;
+    max-width: 60% !important;
+    aspect-ratio: 20/18;
+    margin: auto;
     object-fit: cover;
     object-position: top;
     padding: 0.15rem;
     border-radius: 20px;
     border: 2px solid #0083B8;
-    max-width: 100%;
-    max-width: 300px;
-    aspect-ratio: 10/9;
 }
 
 .css-ocqkz7  .css-keje6w {
@@ -50,7 +48,7 @@
     padding-bottom: 1.5rem;
 }
 
-.element-container.css-1v313y > div {
+.element-container.css-w3z1ua > div {
     text-align: center;
     border-radius: 7px;
     padding: 1rem;
@@ -61,7 +59,7 @@
     background-color: #0083b8;
 }
 
-.element-container.css-1v313y > div .css-1xarl3l {
+.element-container.css-w3z1ua > div .css-1xarl3l {
     color: #00172b;
 }
 
@@ -72,12 +70,11 @@
     height: 80vh;
     text-align: center;
     justify-content: space-evenly;
-    background: url("https://www.istockphoto.com/photo/ai-machine-learning-hands-of-robot-and-human-touching-on-big-data-network-connection-gm1206796363-348181260?utm_campaign=srp_photos_inline&utm_content=https%3A%2F%2Fwww.pexels.com%2Fsearch%2FArtificial%2520intelligence%2520photos%2F&utm_medium=affiliate&utm_source=pexels&utm_term=Artificial%20intelligence%20photos");
+    background: url("https://media.itpro.co.uk/image/upload/s--X-WVjvBW--/f_auto,t_content-image-full-desktop@1/v1570817028/itpro/2018/10/ai_shutterstock_651441421.jpg");
     background-attachment: fixed;
     background-size: cover;
     background-repeat: no-repeat;
     background-position: center center;
-    /*mix-blend-mode: hard-light;*/
     padding: 8rem 2rem;
     position: relative;
     margin-bottom: 2rem;
@@ -113,7 +110,7 @@ h1#convert-your-data-into-dollars span {
     font-size: 2.15em;
     color: #0083B8;
     padding: 3rem;
-    background: url("https://images.unsplash.com/photo-1526925539332-aa3b66e35444?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=465&q=80");
+    background: url("https://ichef.bbci.co.uk/news/976/cpsprodpb/626D/production/_125379152_aigettyimages-1160995648.jpg");
     background-attachment: fixed;
     background-size: cover;
     background-repeat: no-repeat;
