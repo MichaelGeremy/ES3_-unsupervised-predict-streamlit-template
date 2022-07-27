@@ -284,12 +284,11 @@ def main():
 
         # Make a list with the info (Name, destination, image_path) for the team members
         team_members = [
-            ('CHIBUIKEM EFUGHA', 'Member', 'resources/imgs/CHIBUIKEM_EFUGHA.jpeg'),
-            ('MICHAEL MWENDA', 'Member', 'resources/imgs/MICHAEL_MWENDA.jpg'),
-            ('PATRICK ONDUTO', 'Member', 'resources/imgs/PATRICK_ONDUTO.jpg'),
+            ('CHIBUIKEM G. EFUGHA', 'Team Lead', 'resources/imgs/CHIBUIKEM_EFUGHA.jpeg'),
+            ('MICHAEL MWENDA', 'Team Admin', 'resources/imgs/MICHAEL_MWENDA.jpg'),
+            ('PATRICK ONDUTO', 'Tech. Lead', 'resources/imgs/PATRICK_ONDUTO.jpg'),
             ('TOCHUKWU EZEOKAFOR', 'Member', 'resources/imgs/TOCHUKWU_EZEOKAFOR.jpeg'),
             ('ABIOLA AKINWALE', 'Member', 'resources/imgs/Placeholder.png'),
-            ('SEYI ROTIMI', 'Member', 'resources/imgs/Placeholder.png'),
         ]
 
         _, meet_team, _ = st.columns(3)
