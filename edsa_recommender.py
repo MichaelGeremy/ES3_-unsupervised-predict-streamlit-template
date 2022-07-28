@@ -288,7 +288,7 @@ def main():
             ('MICHAEL MWENDA', 'Team Admin', 'resources/imgs/MICHAEL_MWENDA.jpg'),
             ('PATRICK ONDUTO', 'Tech. Lead', 'resources/imgs/PATRICK_ONDUTO.jpg'),
             ('TOCHUKWU EZEOKAFOR', 'Member', 'resources/imgs/TOCHUKWU_EZEOKAFOR.jpeg'),
-            ('ABIOLA AKINWALE', 'Member', 'resources/imgs/Placeholder.png'),
+            ('ABIOLA AKINWALE', 'Member', 'resources/imgs/ABIOLA_AKINWALE.jpg')
         ]
 
         _, meet_team, _ = st.columns(3)
