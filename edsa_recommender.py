@@ -1,5 +1,4 @@
 """
-
     Streamlit webserver-based Recommender Engine.
 
     Author: Explore Data Science Academy.
@@ -15,28 +14,21 @@
     This application is intended to be partly marked in an automated manner.
     Altering delimited code may result in a mark of 0.
     ---------------------------------------------------------------------
-
     Description: This file is used to launch a minimal streamlit web
 	application. You are expected to extend certain aspects of this script
     and its dependencies as part of your predict project.
 
 	For further help with the Streamlit framework, see:
-
 	https://docs.streamlit.io/en/latest/
-
 """
 # Streamlit dependencies
-from pygments import highlight
 import streamlit as st
 st.set_page_config(page_title="Movie Recommender Engine", layout="wide")
-
 # Data handling dependencies
 import pandas as pd
 import numpy as np
-
+# Image Processing
 from PIL import Image
-from yaml import unsafe_load_all  # Image Processing
-
 # Custom Libraries
 from utils.data_loader import (
     load_movie_titles, load_data_for_eda, get_genres, get_years
@@ -46,13 +38,9 @@ from utils.visuals_creator import (
 )
 from recommenders.collaborative_based import collab_model
 from recommenders.content_based import content_model
-
 # Data Loading
 title_list = load_movie_titles('resources/data/movies.csv')
-
 # App declaration
-
-
 def main():
 
     # DO NOT REMOVE the 'Recommender System' option below, however,
@@ -67,7 +55,7 @@ def main():
         # Header contents
         st.write('# Movie Recommender Engine')
         st.write('### EXPLORE Data Science Academy Unsupervised Predict')
-        st.image('resources/imgs/Image_header.png', use_column_width=True)
+        st.image('resources/imgs/Image_header.png',use_column_width=True)
         # Recommender System algorithm selection
         sys = st.radio("Select an algorithm",
                        ('Content Based Filtering',
@@ -75,10 +63,10 @@ def main():
 
         # User-based preferences
         st.write('### Enter Your Three Favorite Movies')
-        movie_1 = st.selectbox('Fisrt Option', title_list[14930:15200])
-        movie_2 = st.selectbox('Second Option', title_list[25055:25255])
-        movie_3 = st.selectbox('Third Option', title_list[21100:21200])
-        fav_movies = [movie_1, movie_2, movie_3]
+        movie_1 = st.selectbox('Fisrt Option',title_list[14930:15200])
+        movie_2 = st.selectbox('Second Option',title_list[25055:25255])
+        movie_3 = st.selectbox('Third Option',title_list[21100:21200])
+        fav_movies = [movie_1,movie_2,movie_3]
 
         # Perform top-10 movie recommendation generation
         if sys == 'Content Based Filtering':
@@ -88,11 +76,12 @@ def main():
                         top_recommendations = content_model(movie_list=fav_movies,
                                                             top_n=10)
                     st.title("We think you'll like:")
-                    for i, j in enumerate(top_recommendations):
+                    for i,j in enumerate(top_recommendations):
                         st.subheader(str(i+1)+'. '+j)
                 except:
                     st.error("Oops! Looks like this algorithm does't work.\
                               We'll need to fix it!")
+
 
         if sys == 'Collaborative Based Filtering':
             if st.button("Recommend"):
@@ -101,11 +90,12 @@ def main():
                         top_recommendations = collab_model(movie_list=fav_movies,
                                                            top_n=10)
                     st.title("We think you'll like:")
-                    for i, j in enumerate(top_recommendations):
+                    for i,j in enumerate(top_recommendations):
                         st.subheader(str(i+1)+'. '+j)
                 except:
                     st.error("Oops! Looks like this algorithm does't work.\
                               We'll need to fix it!")
+
 
     # -------------------------------------------------------------------
 
@@ -113,7 +103,6 @@ def main():
     if page_selection == "Solution Overview":
         st.title("Solution Overview")
         st.write("""
-                 
                 [Recommender systems](https://en.wikipedia.org/wiki/Recommender_system) are one of the most common used applications of data science. Though much work has been done on this topic, the interest and demand in this area remains very high due to the rapid growth of the internet and information overload. It has become necessary for online businesses to help users to deal with information overload and provide personalized recommendations, content and services to them.
                 
                 The Recommender System seek to predict or filter preferences according to the user’s choices and this application recommends movies choices to movie lovers.
@@ -192,22 +181,23 @@ def main():
         # Get the Visuals/Charts for the EDA
         # ---------------------------------------------
         # Create a count of ratings per rating histogram visual
-        ratings_dist_viz = create_ratings_distribution(visual_df[['rating']])
+        top_N = 20
+        ratings_dist_viz, ratings_list = create_ratings_distribution(visual_df[['rating']])
 
         # Create a count of ratings vs average rating per movie scatter plot visual
-        count_avg_rating_visual = create_count_vs_average_ratings_per_movie(
+        count_avg_rating_visual, skewness = create_count_vs_average_ratings_per_movie(
             visual_df[['title', 'rating']])
 
         # Create a count rating per movie to show the top 10 rated movies
-        top_n_frequently_rated_movies = create_top_n_frequently_rated_movie(
-            visual_df[['title', 'rating']], 10)
+        top_n_frequently_rated_movies, top_3_rated_movies, top_rated_average, top_rated_total_ratings = create_top_n_frequently_rated_movie(
+            visual_df[['title', 'rating']], top_N)
 
         # Create a count rating per user to show the top 10 rating users
-        top_n_frequently_rating_users = create_top_n_frequently_rating_users(
-            visual_df[['userId', 'rating']], 10)
+        top_n_frequently_rating_users, top_3_rating_users, top_user_ratings_average, top_users_ratings_total_ratings = create_top_n_frequently_rating_users(
+            visual_df[['userId', 'rating']], top_N)
 
         # Create a count of movies produced vs average rating over time
-        movies_over_time = create_movies_production_over_time(
+        movies_over_time, max_production_year, min_rating_year = create_movies_production_over_time(
             visual_df[['productionYear', 'rating']])
         # Display the metrics
         metric1, metric2, metric3, metric4 = st.columns(4)
@@ -222,19 +212,37 @@ def main():
 
         # Insert a break line to separate the metrics from other visuals
         st.write("---")
-        # Display the visuals
+        # Display the visuals and explanations
         ratings_dist_viz_col, count_avg_rating_visual_col = st.columns(2)
-
+        
+        # Plot visual on rating distribution
         ratings_dist_viz_col.plotly_chart(
             ratings_dist_viz, use_container_width=True)
         count_avg_rating_visual_col.plotly_chart(
             count_avg_rating_visual, use_container_width=True)
-
+        
+        # Explanations on ratings
+        st.write(f'From the visuals above, it shows that most movies have a rating of ```{round(ratings_list[0],1)}```, followed by the rating of ```{round(ratings_list[1], 1)}```. While the least rated movies by individuals were rated ```{round(ratings_list[-1], 1)}``` and ```{round(ratings_list[-2], 1)}```. The Average rating was about ```{round(average_rating, 1)}```. Also, we observe that our average ratings by movie counts are ```{skewness[1]}```, with a skewness value of ```{round(skewness[0], 2)}```.')
+        
+        # Plot visual on most rated movies
         st.plotly_chart(top_n_frequently_rated_movies,
                         use_container_width=True)
+        # Explanations on most rated movies
+        st.write(f'From the above visual, ```{top_3_rated_movies[0][0]}```, ```{top_3_rated_movies[1][0]}```, and ```{top_3_rated_movies[2][0]}``` are the top three most rate movies with average ratings of ```{top_3_rated_movies[0][2]:,}```, ```{top_3_rated_movies[1][2]:,}```, and ```{top_3_rated_movies[2][2]:,}``` from a total of ```{top_3_rated_movies[0][1]}```, ```{top_3_rated_movies[1][1]}``` and ```{top_3_rated_movies[2][1]}``` number of ratings respectively.')
+        st.write(f'The top ```{top_N}``` movies have an average rating of ```{top_rated_average:.1f}``` from a total of ```{top_rated_total_ratings:,}``` number of ratings.')
+        
+        # Plot visual on frequent rating users
         st.plotly_chart(top_n_frequently_rating_users,
                         use_container_width=True)
+        # Explanations on frequent rating user
+        st.write(f'From the above visual, the top three users have average ratings of ```{top_3_rating_users[0][2]}```, ```{top_3_rating_users[1][2]}```, and ```{top_3_rating_users[2][2]}``` for a total of ```{top_3_rating_users[0][1]}```, ```{top_3_rating_users[1][1]}```, and ```{top_3_rating_users[2][1]}```  movies respectively that they have rated.')
+        st.write(f'The top ```{top_N}``` users have an average rating of ```{top_user_ratings_average:.1f}``` from a total of ```{top_users_ratings_total_ratings:,}``` number of ratings.')
+        
+        # Plot visual on movies production over time
         st.plotly_chart(movies_over_time, use_container_width=True, height=600)
+        
+        # Explanations on movies production over time
+        st.write(f'The year ```{max_production_year[0][0]:.0f}``` saw the highest number of movies being produced (a total of ```{max_production_year[0][1]:,.0f}``` movies) with the movies being rated a ```{max_production_year[0][2]:.1f}``` average rating for the year. Over the years, the lowest rating ever given for movies produced in a given year is ```{min_rating_year}```')
     # Create about page
     if page_selection == "About":
         # Creates a main title and subheader on your page -

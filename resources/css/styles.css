@@ -116,3 +116,7 @@ h1#convert-your-data-into-dollars span {
     background-repeat: no-repeat;
     background-position: center center;
 }
+
+code {
+    color: #F7D002;
+}
