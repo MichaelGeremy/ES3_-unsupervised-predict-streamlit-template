@@ -112,25 +112,39 @@ def main():
                 The application uses the two most popular approaches for recommender systems:
                 1. [Content-based filtering](https://www.analyticsvidhya.com/blog/2015/08/beginners-guide-learn-content-based-recommender-systems/) and
                 2. [Collaborative filtering](https://en.wikipedia.org/wiki/Collaborative_filtering).
-                
-                #### 1. Content-based Filtering Approach
+                """)
+        # Content-based Filtering Notes
+        st.write('---')                 
+        st.write('#### 1. Content-based Filtering Approach')
+        # Create column for explanation and image illustration
+        content_left, content_right = st.columns(2)
+        content_left.write("""
                 Content-based recommendation systems work more closely with item features or attributes rather than user data. This approach recommends movies based on similarities among the contents of movies. They use features such as genre, director, cast, or description of movies a user react to to make recommendations based on these movie. 
                 
                 Similarity is the main key fundamental here, (i.e the most similar movie to what we have watched gets recommended to us) thus let's us look on how we computed the similarity.
-                
+                """)
+        content_right.markdown('<img id="content-img" src="https://miro.medium.com/max/1400/1*BME1JjIlBEAI9BV5pOO5Mg.png">', unsafe_allow_html=True)           
+        st.write("""        
                 ##### Cosine Similarity: Computing similarity
                 Since we are using textual data, we use the **consine similarity** to compute the similarity between the movies.
                 
                 We convert the textual data to a vector using ```TfifdVectorizer``` from ***sklearn's feature_extraction*** library creating the movies' features. A similar matrix is created with vectors that are used to check for the cosine angle between two movie vectors. This angle is used to show how similar this two movie vectors are to each other by comparing if the angle is 0. ***sklearn's*** ```cosine_similarity``` function is used here.
                 
                 Though content-based filtering doesn't need any data about users to make recommendations, a drawback is it tends to return on average items in a similar category with little variation across the recommendations.
-                
-                #### 2. Collaborative Filtering Approach
+                """)
+        # Collaborative Filtering Notes
+        st.write('---')       
+        st.write(' #### 2. Collaborative Filtering Approach')
+        # Create column for explanation and image illustration
+        colab_left, colab_right = st.columns(2)
+        colab_left.write("""
                 Collaborative filtering works around the interactions that users have with items, finding patterns that the data about the items or users itself can’t.
                 This approach recommends movies based on people's similar tastes and preferences liked in the past (i.e. historical data). In another word, this method predicts unknown ratings by using the similarities between users.
                 
                 The collaborative recommendation system is built using ```SVD``` model from ***scikit-surprise (surprise library)***
-                
+                """)
+        colab_right.markdown('<img id="colab-img" src="https://miro.medium.com/max/1400/1*x8gTiprhLs7zflmEn1UjAQ.png">', unsafe_allow_html=True)
+        st.write("""
                 ##### What is Singular Value Decomposition (SVD)?
                 Singular Value Decomposition (SVD) and ``Matrix Factorization`` models are used to predict the end user's rating on items yet to be consumed by users.
 
@@ -144,8 +158,11 @@ def main():
 
                 The general goal of SVD (and other matrix factorization methods) is to decompose the matrix ```R``` with all missing values and multiply its components, ```U```, ```Σ``` and ```V``` once again. As a result, there are no missing values and it is possible to recommend each user movies (items) they have not seen yet.
                 
+                ---
+                
                 Although collaborative filtering performs better than content based filtering in recommending items, it suffers from cold start problem for new items, data sparsity affecting the quality of the systems and scaling problems due to complexity of growing datasets.
-                """)
+                
+                ---""")
 
     if page_selection == "EDA":
         # You may want to add more sections here for aspects such as an EDA,
@@ -242,7 +259,7 @@ def main():
         st.plotly_chart(movies_over_time, use_container_width=True, height=600)
         
         # Explanations on movies production over time
-        st.write(f'The year ```{max_production_year[0][0]:.0f}``` saw the highest number of movies being produced (a total of ```{max_production_year[0][1]:,.0f}``` movies) with the movies being rated a ```{max_production_year[0][2]:.1f}``` average rating for the year. Over the years, the lowest rating ever given for movies produced in a given year is ```{min_rating_year}```')
+        st.write(f'The year ```{max_production_year[0][0]:.0f}``` saw the highest number of movies being produced (a total of ```{max_production_year[0][1]:,.0f}``` movies) with the movies being rated a ```{max_production_year[0][2]:.1f}``` average rating for the year. Over the years, the lowest rating ever given for movies produced in a given year is ```{min_rating_year:.1f}```')
     # Create about page
     if page_selection == "About":
         # Creates a main title and subheader on your page -

@@ -1,6 +1,6 @@
-#MainMenu, footer, header {
+/* #MainMenu, footer, header {
     visibility:hidden;
-}
+} */
 
 .css-ocqkz7 img {
     max-width: 60% !important;
@@ -119,4 +119,14 @@ h1#convert-your-data-into-dollars span {
 
 code {
     color: #F7D002;
+}
+
+#content-img, #colab-img {
+    width: fit-content !important;
+    aspect-ratio: initial !important;
+    border: none !important;
+    border-radius: initial !important;
+    object-position: left !important;
+    margin-right: 90% !important;
+    margin-left: 10% !important;
 }
